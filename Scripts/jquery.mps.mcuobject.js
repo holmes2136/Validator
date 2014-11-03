@@ -53,11 +53,7 @@
         }
 
 
-        /*Upldate 20140918
-        if (!!keyinField && !!value && !$.isArray(value)) {
-        // 轉大寫 TransCase
-        value = value.toUpperCase();
-        }*/
+       
         var keyinField = $mcu.data('keyinField');
         if (!!keyinField && !!keyinField.TransCase && keyinField.TransCase == '大寫' && !!value && !$.isArray(value)) {
             value = value.toUpperCase();
@@ -113,11 +109,7 @@
             value = $mcu.children('.span').text();
         }
 
-        /*Upldate 20140918
-        if (!!keyinField && !!value && !$.isArray(value)) {
-            // 轉大寫 TransCase
-            value = value.toUpperCase();
-        }*/
+       
         var keyinField = $mcu.data('keyinField');
         if (!!keyinField && !!keyinField.TransCase && keyinField.TransCase == '大寫' && !!value && !$.isArray(value)) {
             value = value.toUpperCase();
@@ -153,8 +145,7 @@
 
                 $td.each(function (j, td) {
 
-                    //Holmes update START
-                    //coltype = $('#' + $(td).find('.to-select2:last').attr('id')).data('mcutype');
+                 
                     coltype = $(td).find("[data-mcutype='select']").data('mcutype');
 
                     if (coltype == 'textbox') {
@@ -169,8 +160,7 @@
                         tmp[j] = $.trim($(td).text());
                     }
 
-                    //tmp[j] = $.trim($(td).text());
-                    //Holmes update END
+                 
 
                 });
                 value[i] = {
@@ -189,11 +179,7 @@
         }
 
 
-        /*Upldate 20140918
-        if (!!keyinField && !!value && !$.isArray(value)) {
-        // 轉大寫 TransCase
-        value = value.toUpperCase();
-        }*/
+     
         var keyinField = $mcu.data('keyinField');
         if (!!keyinField && !!keyinField.TransCase && keyinField.TransCase == '大寫' && !!value && !$.isArray(value)) {
             value = value.toUpperCase();
@@ -248,12 +234,9 @@
                         tmp = '';
 
                     for (var j = 0; j < cell.length; j++) {
-                        //yinghsin start
-                        //tmp += '<td width="' + colModel[j].width  + '">' + cell[j] + '</td>';
-
-                        //Holmes start
+                       
                         if (colModel[j].linkto == "Y") {
-                            //.find('.controls')
+                          
                             var tempId = '';
                             var type = $('#' + colModel[j].name).data('mcutype');
                             var $con;
@@ -265,7 +248,7 @@
                                 $con.css("vertical-align", "top");
                                 $con.find('label').text('').css('width', '0px');
                                 $con.find('div').css('margin-left', '0px');
-                                //$temp.select2();
+                              
                                 $con.attr('id', 'c' + i + '_' + $con.attr('id'));
                                 $con.data('mcutype', 'select');
                                 $con.attr('data-mcutype', 'select');
@@ -297,8 +280,7 @@
                                 var $a = $con.find("a");
                                 $a.attr('id', 'ca' + i + '_' + $a.attr('id'));
                                 var parentname = colModel[j].name;
-                                //$a.click(function () { bindDeleteButton(this, parentname, i); });
-                                //$a.attr('onclick', "bindDeleteButton('" + parentname + "', '" + $mcu[0].id + "');");
+                              
                                 $a.attr('onclick', "bindDeleteButton('" + parentname + "', '" + $mcu[0].id + "', '" + i + "');");
                                 $con.css('margin-top', '0px');
                             }
@@ -321,7 +303,7 @@
 
 
 
-                        //yinghsin end
+                        
                     }
                     _html += '<tr>' + tmp + '</tr>';
                 }
@@ -345,7 +327,7 @@
             if (!!val[0]) {
                 $mcu.find('select.to-select2:eq(0)').val(val[0]).trigger('change', [true]);
             }
-            //$mcu.find('select.to-select2:eq(0)').val(val[0]).trigger('change');
+           
 
             var val12 = $mcu.find('select.to-select2:eq(1)').val() + $mcu.find('select.to-select2:eq(2)').val();
             var $addrText = $mcu.find(':text:not(.select2-input):eq(0)'),
@@ -371,19 +353,9 @@
         val = val === undefined ? '' : val;
 
         if (mcutype === 'select2') {
-            //$mcu.find('select').select2('val', val);
+            
         } else if (mcutype === 'checkgroup') {
-            /*
-            $mcu.find(':checkbox,:radio').prop('checked', 0);
-            if ($.isArray(val)) {
-            $.each(val, function (i, v) {
-            $mcu.find(':checkbox[value=' + v + '],:radio[value=' + v + ']').prop('checked', 1);
-            });
-            } else {
-            val = val.indexOf('.') === val.length - 1 ? val.substring(0, val.length - 1) : val;
-            $mcu.find(':checkbox[value=' + val + '],:radio[value=' + val + ']').prop('checked', 1);
-            }
-            */
+           
         } else if (mcutype === 'flexigrid') {
             var $grid = $mcu.find('.grid'),
                 colModel = $mcu.data('colModel');
@@ -430,7 +402,7 @@
             if (!!val[0]) {
                 $mcu.find('select.to-select2:eq(0)').val(val[0]).trigger('change', [true]);
             }
-            //$mcu.find('select.to-select2:eq(0)').val(val[0]).trigger('change');
+          
 
             var val12 = $mcu.find('select.to-select2:eq(1)').val() + $mcu.find('select.to-select2:eq(2)').val();
             var $addrText = $mcu.find(':text:not(.select2-input):eq(0)'),

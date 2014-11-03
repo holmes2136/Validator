@@ -2,36 +2,7 @@
     gotoSorryTimer, keepWorkTimer, keepWorkSec = 10, 
     appPath = location.protocol + '//' + location.host + '/' + location.pathname.split('/')[1] + '/', 
     sorry = appPath + 'sorry.aspx';
-    //appPath = location.pathname.indexOf('/FBMAPP/') > -1 ? '/FBMAPP/' : '/FBMAPP2/';
-
-function gotoSorry(){
-    if(!!keepWorkTimer){
-        clearInterval(keepWorkTimer);
-    }
-    $('.bootbox, .modal').removeClass('fade').modal('hide');
-    keepWorkSec = 10;
-    bootbox.dialog('您在此頁面的時間已超過逾時時間，是否要繼續目前的作業呢？', [{
-            label: '繼續(' + keepWorkSec + ')',
-            'class': 'btn-primary keep-work-btn',
-            callback: function(){
-                gotoSorryTimer = setTimeout(gotoSorry, gotoSorryTimeoutInterval);
-            }
-        }, {
-            label: '離開',
-            'class': 'btn-danger goto-sorry',
-            callback: function(){
-                location.href = sorry + '?msg=1';
-            }
-        }]);
-
-    keepWorkTimer = setInterval(function(){
-        $('.keep-work-btn').html('繼續(' + (keepWorkSec--) + ')');
-        if(keepWorkSec < 0){
-            clearInterval(keepWorkTimer);
-            $('.goto-sorry').trigger('click');
-        }
-    }, 1000);
-}
+   
 
 (function ($) {
     if (!!!window.console) {
@@ -325,17 +296,11 @@ function gotoSorry(){
     };
 
     $(function(){
-        // 依頁面上的 #menu-class 來決定讓指定的選單加上 .active
-//        var $menuClass = $('#menu-class');
-//        if($menuClass.length){
-//            var $menu = $('.' + $menuClass.val());
-//            $menu.addClass('active').parentsUntil('.nav').filter('li').addClass('active');
-//        }
+    
 
         // 讓有 rel="tooltip" 的超連結及 .btn 有 data-rel="tooltip" 的元素產生 tooltip 效果
         $('[rel=tooltip], .btn[data-rel=tooltip]').tooltip();
 
-        //Ralph 20140605
         var path = location.pathname.split("/");
         var pathName = path[2];
         var file;
@@ -405,8 +370,6 @@ function gotoSorry(){
                     });
             });
         }
-
-        //20140324 寶義 start
         $(".del_click").on('click', function (event){
             event.preventDefault();
             var _id = $(this).attr('id').split('_');
@@ -418,7 +381,7 @@ function gotoSorry(){
                 }
             });
         });
-        //20140324 寶義 end
+       
         
          
 
@@ -448,19 +411,11 @@ function gotoSorry(){
         }
     });
     
-    function logError(details) {
-        $.ajax({
-            url: appPath + 'ajax/MAPPU00003.ashx',
-            type: 'post',
-            data: {devices: encodeURIComponent(JSON.stringify(navigator.userAgent)), details: encodeURIComponent(JSON.stringify(details)) }
-        }); 
-    }
+    
     
     window.onerror = function(message, file, line) {
         logError(file + ':' + line + '\r\n' + message);
     };
     
-//    $(document).ajaxError(function(e, xhr, settings) {
-//      logError(settings.url + ':' + xhr.status + '\r\n' + xhr.responseText);
-//    });
+
 })(jQuery);
