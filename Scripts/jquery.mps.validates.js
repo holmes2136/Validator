@@ -8,7 +8,7 @@
             };
         }
 
-        var $mcu = field.$mcu,
+        var $mcu = field,
             fieldName = field.fieldName;
 
         eventType = eventType || '12';
@@ -30,8 +30,7 @@
                 var rule = validateRules[i],
                 ruleName = rule.RuleName,
                 runType = rule.RunType,
-                ruleType = rule.RuleType,
-                ruleFunc = ruleType == '2' ? mappKeyinValidators[ruleName] : f2dKeyinValidators[ruleName];
+                ruleFunc = DocKeyinValidators[ruleName];
 
                 if (/*eventType != '0' && */ /*runType != eventType*/eventType.indexOf(runType) == -1) continue;
                 if (!!!ruleName || !!!ruleFunc) {
@@ -45,7 +44,7 @@
                 console.time('[' + eventType + ']' + ruleName);
                 result = ruleFunc.apply($mcu, [field, rule, eventData]);
                 console.timeEnd('[' + eventType + ']' + ruleName);
-                if (result != null && !result.success) {
+                if (result != null) {
                     console.info(field);
                     console.info(result);
                     console.info($.format('[Field Validate End:{0}]', fieldName || field.mcuId));
@@ -92,23 +91,22 @@
             }
         }
 
-        //yinghsin start
-        var compareStr = CompareBeforeAndAfter2(field);
-        if (compareStr != "") {
-            return {
-                success: false,
-                msg: compareStr
-            };
-        }
-        else {
-            return {
-                success: true,
-                msg: ''
-            };
 
-        }
+//        var compareStr = CompareBeforeAndAfter2(field);
+//        if (compareStr != "") {
+//            return {
+//                success: false,
+//                msg: compareStr
+//            };
+//        }
+//        else {
+//            return {
+//                success: true,
+//                msg: ''
+//            };
 
-        //yinghsin end
+//        }
+
         //}
 
 

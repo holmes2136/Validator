@@ -5,14 +5,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/jquery-1.8.3.min.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/bootstrap.min.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/underscore-1.4.1-min.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/jquery.mps.mcuobject.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/jquery.mps.validates.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/plugins.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/mapp.js") %>"></script>
-        <script type="text/javascript" src="<%= ResolveUrl("Scripts/validator.js") %>"></script>
+        <script type="text/javascript" src="Scripts/jquery-1.8.3.min.js?<%=DateTime.Now.ToString("yyyyMMddHH") %>"></script>
+        <script type="text/javascript" src="Scripts/bootstrap.min.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/underscore-1.4.1-min.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/jquery.mps.mcuobject.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/jquery.mps.validates.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/plugins.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/mapp.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
+        <script type="text/javascript" src="Scripts/validator.js?<%=DateTime.Now.ToString("yyyyMMddHH")%>"></script>
         <link href="Styles/bootstrap.min.css" rel="stylesheet" />
     <asp:ContentPlaceHolder id="head" runat="server">
        

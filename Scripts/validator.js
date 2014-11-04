@@ -2,8 +2,8 @@
 var forms = [],
     fieldRuleList = [];
 
-forms['tab-32-mcu-0'] = { "mcu-954": {"mcutype":"text"} };
-fieldRuleList['mcu-954'] = { "McuId": "mcu-954", "Rules": [{ "RuleName": "A001", "RuleParam1": "test"}] };
+forms['tab-32-mcu-0'] = { "mcu-954": { "mcuId" : "mcu-954","mcutype": "text", "fieldName": "IDENTITY"}};
+fieldRuleList['mcu-954'] = { "McuId": "mcu-954", "Rules": [{ "RuleName": "A001", "RuleParam1": "test","RunType":"0"}] };
 
 
 $(document).ready(function () {
@@ -15,9 +15,11 @@ $(document).ready(function () {
 
     $("#mcu-3965").click(function (e) {
 
+        e.preventDefault();
+
         var result = checkFieldByTab('tab-32-mcu-0');
 
-        if (!!checkResult.success) {
+        if (!!result.success) {
             return;
             //return $.alert("There are errors!");
         }
@@ -25,17 +27,42 @@ $(document).ready(function () {
 
 });
 
+var ResultObject = function () {
+    this.success = 1;
+    this.msg = '';
+    this.data = arguments[0] || '';
+    this.showAlert = 0;
+    this.msgType = 0;
+    this.msgContent = '';
+    return this;
+};
+
+ResultObject.prototype.setSccess = function (msg) {
+    this.success = 1;
+    this.msg = msg || '';
+    return this;
+};
+ResultObject.prototype.setFailure = function (msg) {
+    this.success = 0;
+    this.msg = msg || '';
+    return this;
+};
+ResultObject.prototype.setShowAlert = function (show) {
+    this.showAlert = show;
+    return this;
+};
+
 
 var DocKeyinValidators = {
     //身份證字號/居留證檢核
-    'A001': function (field,params) {
+    'A001': function (field, params) {
         var $this = $(this),
             value = $this.getMcuVal(),
-            result = true;
+            result = new ResultObject(value);
 
 
         if (!!value && !CheckID(value)) {
-            result = false;
+            result.setFailure('身份證輸入格式錯誤');
         }
 
         return result;
@@ -65,98 +92,34 @@ function checkFieldByTab(tab) {
     var tmpFormTab = forms[tab];
     if (!!tmpFormTab) {
         for (var _mcuId in tmpFormTab) {
-            var tmpField = tmpFormTab[_mcuId],
+            //var tmpField = tmpFormTab[_mcuId],
+            var tmpField = $("#" + _mcuId),
                     tmpRuleObj = fieldRuleList[_mcuId];
 
             if (tmpField.mcutype == 'label') continue;
 
             var result = $.validateOnNextPage(tmpField, tmpRuleObj, { NotToShow: 1 });
             if (!result.success) {
-                if (result.msgType == 1) { msgType = 1; msgContent = result.msgContent }
+                if (result.msgType == 1) { msgType = 1; msgContent = result.msg }
                 else if (!!!result.showAlert) {
-                    tmpField.$mcu.addClass('error gotonext').tooltip('destroy').tooltip({
+                    tmpField.addClass('error').tooltip('destroy').tooltip({
                         title: result.msg + '<span class="hide">' + tmpField.mcuId + '</span>',
                         placement: 'right',
                         trigger: 'hover'
-                        //trigger: tmpField.mcutype == 'flexigrid' || tmpField.mcutype == 'checkgroup' ? 'hover' : 'hover'
                     });
                 } else {
                     showAlert = 1;
                 }
-                //if(result.isNotCount === false){
-                noError++;
-                //}
+               
             } else {
-                tmpField.$mcu.removeClass('gotonext');
-            }
-
-            if (result.success) {
-                result = $.validateOnBlur(tmpField, tmpRuleObj, { NotToShow: 1 });
-                if (!result.success) {
-                    tmpField.$mcu.addClass('error focusout').tooltip('destroy').tooltip({
-                        title: result.msg + '<span class="hide">' + tmpField.mcuId + '</span>',
-                        placement: 'right',
-                        trigger: 'hover'
-                        //trigger: (tmpField.mcutype == 'flexigrid' || tmpField.mcutype == 'checkgroup') ? 'hover' : 'focus'
-                    });
-
-                    noError++;
-                } else {
-                    tmpField.$mcu.removeClass('focusout');
-                }
-            }
-
-            if (result.success) {
-                result = $.validateOnBlur(tmpField, tmpRuleObj, { NotToShow: 1 });
-                if (!result.success) {
-                    tmpField.$mcu.addClass('error focusout').tooltip('destroy').tooltip({
-                        title: result.msg + '<span class="hide">' + tmpField.mcuId + '</span>',
-                        placement: 'right',
-                        trigger: 'hover'
-                        //trigger: tmpField.mcutype == 'flexigrid' ? 'hover' : 'focus'
-                    });
-
-                    noError++;
-                } else {
-                    tmpField.$mcu.removeClass('focusout');
-                }
-            }
-
-            if (result.success && device == 'app' && tmpField.mcutype != 'label' && tmpField.mcutype != 'checkgroup' && !tmpField.$mcu.hasClass("mcu-hidden")) {
-                result = f2dKeyinValidators['checkBig5'].apply(tmpField.$mcu, [tmpField.$mcu, tmpRuleObj, fieldName2McuMap, fieldRuleList, { NotToShow: 1}]);
-                if (!result.success) {
-                    return tmpField.$mcu.addClass('error big5').tooltip('destroy').tooltip({
-                        title: result.msg + '<span class="hide">' + tmpField.mcuId + '</span>',
-                        placement: 'right',
-                        trigger: 'focus'
-                    });
-                } else {
-                    tmpField.$mcu.removeClass('big5');
-                }
-            }
-
-
-
-            if (!tmpField.$mcu.hasClass('focusout') && !tmpField.$mcu.hasClass('keyup') && !tmpField.$mcu.hasClass('change') && !tmpField.$mcu.hasClass('gotonext')) {
-                tmpField.$mcu.removeClass('error').tooltip('destroy');
-            }
-        }
-        var _errorCount = hasTab ? noError : noError || $(nowTabId + ' .error').length;
-        if (!!_errorCount) {
-            if ($errorBadge.length) {
-                $errorBadge.text(_errorCount).show();
-            } else {
-                $tabLink.append(' <span class="badge badge-important error-badge">' + _errorCount + '</span>');
-            }
-        } else {
-            if ($errorBadge.length) {
-                $errorBadge.text('0').hide();
+                tmpField.removeClass('error');
             }
         }
     }
 
     return {
-        success: hasTab ? noError : noError || !!$(nowTabId + ' .error').length,
+        //success: hasTab ? noError : noError || !!$(nowTabId + ' .error').length,
+        success: noError > 0 ?false:true,
         showAlert: showAlert, msgType: msgType, msgContent: msgContent
     };
 }
